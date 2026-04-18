@@ -1,0 +1,99 @@
+import csv
+import json
+
+# Data storage
+courses = []
+faculty_list = []
+timetable = {}
+
+# -------- COURSE --------
+def add_course():
+    code = input("Course Code: ")
+    name = input("Course Name: ")
+    credits = input("Credits: ")
+    sem = input("Semester: ")
+
+    courses.append([code, name, credits, sem])
+    print("Course added")
+
+def view_courses():
+    for c in courses:
+        print(c)
+
+# -------- FACULTY --------
+def add_faculty():
+    fid = input("Faculty ID: ")
+    name = input("Faculty Name: ")
+
+    faculty_list.append([fid, name, []])
+    print("Faculty added")
+
+def assign_course():
+    fid = input("Faculty ID: ")
+    course = input("Course Code: ")
+
+    for f in faculty_list:
+        if f[0] == fid:
+            f[2].append(course)
+            print("Course assigned")
+            return
+    print("Faculty not found")
+
+def view_faculty():
+    for f in faculty_list:
+        print(f)
+
+# -------- TIMETABLE --------
+def add_timetable():
+    day = input("Day: ")
+    time = input("Time: ")
+    course = input("Course: ")
+    faculty = input("Faculty: ")
+
+    if day not in timetable:
+        timetable[day] = []
+
+    timetable[day].append([time, course, faculty])
+    print("Added")
+
+def view_timetable():
+    for d in timetable:
+        print(d, ":", timetable[d])
+
+# -------- SAVE --------
+def save_data():
+    with open("courses.csv", "w", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(courses)
+
+    with open("faculty.json", "w") as f:
+        json.dump(faculty_list, f)
+
+    print("Saved")
+
+# -------- MENU --------
+while True:
+    print("\n1.Add Course 2.View Course 3.Add Faculty 4.Assign Course")
+    print("5.View Faculty 6.Add Timetable 7.View Timetable 8.Exit")
+
+    ch = input("Choice: ")
+
+    if ch == "1":
+        add_course()
+    elif ch == "2":
+        view_courses()
+    elif ch == "3":
+        add_faculty()
+    elif ch == "4":
+        assign_course()
+    elif ch == "5":
+        view_faculty()
+    elif ch == "6":
+        add_timetable()
+    elif ch == "7":
+        view_timetable()
+    elif ch == "8":
+        save_data()
+        break
+    else:
+        print("Wrong choice") 
